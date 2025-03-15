@@ -44,3 +44,13 @@ def eliminar(self,dato):
             nodo_actual.next = nodo_actual.next.next
             return
         nodo_actual = nodo_actual.next
+
+_______________________________________________________________________________________________________________________________________
+
+
+from typing import Optional
+
+class Node:
+    def__init__(self, numero:int)-> None:
+        self.dato = numero
+        self.next:Optional ["Node"]= None
