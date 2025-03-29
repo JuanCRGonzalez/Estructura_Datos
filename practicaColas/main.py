@@ -20,13 +20,17 @@ ticketTypes = {
 def crear_turno(turno: Ticket):
 
     # Aquí podrías agregar la lógica para guardar el turno en una base de datos---------------
-    if turno.type not in ticketTypes:
+    if turno.service_type not in ticketTypes:
         return{"error":"Ticket no valido"}
 
     #add_queue(turno, ticketTypes) CORREGIDO
     #return {"mensaje": "Turno creado correctamente", "datos_turno": turno}
 
-    add_queue(ticketTypes[turno.types], ticketTypes)
+    # Asignar prioridad de tickets por edad
+    if turno.age > 60 and not turno.priority_attention:
+        turno.priority_attention = True
+
+    add_queue(turno, ticketTypes)
     return {"mensaje": "Turno creado correctamente", "datos_turno": turno}
 
 # Endpoint para obtener el siguiente turno
@@ -36,16 +40,29 @@ def obtener_siguiente_turno(tipo: str):
         return {"error": "Tipo de ticket no valido"}
     #Si el tipo de tiquetes escogido no esta dentro de "ticketTypes, no lo valida"
 
-    ticket=ticketTypes[tipo].dequeue()
-    if ticket is None:
+    next_ticket=ticketTypes[tipo].dequeue()
+    if next_ticket is None:
         return {"mensaje":"No hay turnos en la cola"}
     #Si el "tipo" de tickets en valido y está vacio, entonces no hay turnos pendientes
 
-    return {"mensaje": "El siguiente turno es", "datos_turno": ticket}
+    return {"mensaje": "El siguiente turno es", "datos_turno": next_ticket}
 
 # Endpoint para listar los turnos en cola por el tipo de turno
 @app.get("/ticketList")
 def listar_turnos_cola(tipo: str):
+    
+    if tipo not in ticketTypes:
+        return {"error": "Tipo de ticket no válido"}
+
+    turnos = []
+    current = ticketTypes[tipo].head
+    while current:
+        turnos.append({
+            "turno": current.data.name,
+            "prioridad": current.priority
+        })
+        current = current.next
+
     return {"mensaje": "Lista de turnos en cola", "datos_turnos": ""}
 
 # Otros endpoints existentes

@@ -6,7 +6,7 @@ class TicketController:
         self.head = None
     
     def is_empty(self) -> bool:
-        return self.head == None
+        return self.head is None
     
     def enqueue(self, ticket: Ticket) -> None:
         node = Node(ticket, ticket.priority)
@@ -18,7 +18,7 @@ class TicketController:
                 node.next = current
                 self.head = node
             else:
-                while current.next != None and current.next.priority > node.priority:
+                while current.next and current.next.priority >= node.priority:
                     current = current.next
                 node.next = current.next
                 current.next = node
@@ -26,10 +26,16 @@ class TicketController:
     def dequeue(self) -> Ticket:
         if self.is_empty():
             return None
-        else:
-            ticket = self.head.data
-            self.head = self.head.next
-            return ticket
+        ticket = self.head.data
+        self.head = self.head.next
+        return ticket
+        #Con este se priorizan las de alta prioridad, ubicandolas arriba "cabeza"
+        #y colocando las de prioridad baja en la cola
+        
+        #else:
+            #ticket = self.head.data
+            #self.head = self.head.next
+            #return ticket
         
     def peek(self) -> Ticket:
         if self.is_empty():
