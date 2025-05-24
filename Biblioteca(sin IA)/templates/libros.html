@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block titulo %}Libros{% endblock %}
+
+{% block contenido %}
+    <h1>Libros</h1>
+    <form method = "POST" action="{{ url_for('manejar_libros') }}">
+        <div class="form-group">
+            <label for="titulo">Titulo</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" requiered>
+        </div>
+        <div class="form-group">
+            <label for="autor">Autor</label>
+            <input type="text" class="form-control" id="autor" name="autor" requiered>
+        </div>
+                <div class="form-group">
+            <label for="isbn">ISBN</label>
+            <input type="text" class="form-control" id="isbn" name="isbn" requiered>
+        </div>
+                <div class="form-group">
+            <label for="editorial">Editorial</label>
+            <input type="text" class="form-control" id="editorial" name="editorial" requiered>
+        </div>
+                <div class="form-group">
+            <label for="fecha_publicacion">Fecha de publicación</label>
+            <input type="number" class="form-control" id="fecha_publicacion" name="fecha_publicacion" requiered>
+        </div>
+        <button type="submit" class="btn btn-primary">Agregar Libro</button>
+    </form>
+
+    <h2> Lista de Libros</h2>
+    <ul class = "list-group">
+        {% for libro in libros %}
+            <li class = "list-group-item">
+            {{ libro.titulo }} por {{ libro.autor }} (ISBN: {{ libro.isbn }}) ( {{ libro.editorial }}) ( {{ libro.fecha_publicacion }})
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

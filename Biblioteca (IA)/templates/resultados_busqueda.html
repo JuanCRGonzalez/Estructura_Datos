@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block titulo %}Resultados de Búsqueda{% endblock %}
+
+{% block contenido %}
+    <h1>Resultados para: "{{ consulta }}"</h1>
+
+    {% if resultados %}
+        <ul>
+        {% for libro in resultados %}
+            <li>{{ libro.titulo }} por {{ libro.autor }} (ISBN: {{ libro.isbn }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron libros que coincidan con tu búsqueda.</p>
+    {% endif %}
+{% endblock %}
